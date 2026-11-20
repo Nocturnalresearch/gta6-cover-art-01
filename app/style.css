@@ -1,12 +1,140 @@
-html, body { margin: 0; height: 100%; background: #f2f0f4; color: #1d1b22; font: 15px/1.4 system-ui, sans-serif; }
-.app { display: flex; gap: 32px; align-items: center; justify-content: center; height: 100%; padding: 24px; box-sizing: border-box; }
-.controls { display: flex; flex-direction: column; gap: 14px; width: 280px; }
-.controls h1 { margin: 0; font-size: 28px; }
-.controls p { margin: 0; color: #5c5866; }
-label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; }
-input[type=text] { font: inherit; padding: 8px; border: 1px solid #c9c4d1; border-radius: 6px; }
-button { font: inherit; font-weight: 700; padding: 10px; border: 0; border-radius: 6px; background: #1d1b22; color: #fff; cursor: pointer; }
-canvas { width: min(70vh, 60vw); height: min(70vh, 60vw); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); }
+/* Vice Cover Studio — a dark neon editor: the controls on the left, the live
+   cover on the right. The caption font ships with the app (Anton, OFL). */
+
+@font-face {
+  font-family: 'Anton';
+  src: url('./fonts/Anton-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #12081f;
+  color: #f5f0fa;
+  font: 15px/1.45 system-ui, -apple-system, sans-serif;
+}
+
+.app {
+  display: flex;
+  gap: 28px;
+  height: 100%;
+  padding: 22px 28px;
+  box-sizing: border-box;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 320px;
+  min-width: 280px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.controls h1 {
+  margin: 0;
+  font-family: 'Anton', 'Arial Narrow', sans-serif;
+  font-size: 34px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #ff2e88, #ffd76a 55%, #22d3ee);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.tagline { margin: 0; color: #c9b8d8; }
+
+.field { display: flex; flex-direction: column; gap: 7px; font-weight: 600; }
+.label { font-weight: 600; }
+.hint { font-weight: 400; font-size: 12.5px; color: #a08db3; }
+
+input[type=text] {
+  font: inherit;
+  padding: 9px 10px;
+  border: 1px solid #4a3560;
+  border-radius: 8px;
+  background: #1e1030;
+  color: #f5f0fa;
+}
+
+input[type=file] { font: inherit; color: #c9b8d8; }
+
+input[type=range] { width: 100%; accent-color: #ff2e88; }
+
+.slider {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-weight: 600;
+  font-size: 13.5px;
+}
+.slider span { color: #ffd76a; font-weight: 700; }
+
+.choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.choices button, .thumbs button {
+  font: inherit;
+  font-weight: 600;
+  padding: 7px 12px;
+  border: 1px solid #4a3560;
+  border-radius: 8px;
+  background: #1e1030;
+  color: #e8ddf2;
+  cursor: pointer;
+}
+.choices button:hover, .thumbs button:hover { border-color: #ff2e88; }
+.choices button.on, .thumbs button.on {
+  background: #ff2e88;
+  border-color: #ff2e88;
+  color: #fff;
+}
+
+.thumbs { display: flex; flex-wrap: wrap; gap: 8px; }
+
+#export {
+  font: inherit;
+  font-weight: 800;
+  font-size: 17px;
+  padding: 13px;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #ff2e88, #ff7a3d);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 24px rgba(255, 46, 136, 0.45);
+}
+#export:hover { filter: brightness(1.1); }
+
+#status { margin: 0; min-height: 1.2em; color: #7ee0b8; }
+
+.preview-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+#preview {
+  max-width: 100%;
+  max-height: 100%;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+}
+
+/* A cover shot hides the editor and fills the window with the cover. */
 body.shot-cover .controls { display: none; }
-body.shot-cover .app { padding: 0; }
-body.shot-cover canvas { width: 100vw; height: 100vh; box-shadow: none; }
+body.shot-cover .app { padding: 0; gap: 0; }
+body.shot-cover .preview-wrap { width: 100vw; height: 100vh; }
+body.shot-cover #preview {
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  max-height: none;
+  box-shadow: none;
+  border-radius: 0;
+}
